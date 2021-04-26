@@ -550,6 +550,16 @@ type1 compareNumber(type1 a, type1 b, type2 function){
 }
 
 
+void exmapleFunction(){
+    static int a = 0;
+    std::cout<<a<<"  ";
+    a++;
+}
+
+template<typename type>
+void exampleVoidFunc(void* a, void* b){
+    *(type* )a > *(type*) b ? std::cout<<*(type*)a<<std::endl : std::cout<<*(type*)b<<std::endl;
+}
 
 int main(){
     /*
@@ -667,18 +677,18 @@ int main(){
         std::cout<<*(c+i)<<"  ";
     }
     */
-    /*
+    
     Derived derived;
     Derived * ptr = new Derived;
-    //ptr->print();
-    //ptr->print(10);
-    //std::cout<<ptr->returnInt(100)<<std::endl;
-    ptr->~Base();
-    derived.~Base();*/
+    ptr->print();
+    ptr->print(10);
+    std::cout<<ptr->returnInt(100)<<std::endl;
+    ptr->~Derived();
+    derived.~Derived();
     
-    //std::shared_ptr<Derived> ptr = std::make_shared<Derived>();
-    //ptr->print();
-
+    std::shared_ptr<Derived> ptr_derived = std::make_shared<Derived>();
+    ptr_derived->print();
+    
     std::cout<<(compareNumber<float, float (float, float )>(5.2542f, 2.314f, max))<<std::endl;
     std::cout<<compareNumber<float>(1.3467f, 2.6721f, [=](float a, float b){
         return (a > b) ? a:b;
@@ -686,4 +696,28 @@ int main(){
 
     std::cout<<max(5.3f, 2.7f)<<std::endl;
     std::cout<<max(1, 2)<<std::endl;
+
+    std::unique_ptr<Derived> ptr_derived2 = std::make_unique<Derived>();
+    ptr_derived2->print();
+    std::unique_ptr<Derived> ptr2;
+    ptr2 = std::move(ptr_derived2);
+    ptr2->print();
+
+    for(int i =0; i<10; i++ ){
+        exmapleFunction();
+    }
+    
+    std::cout<<std::endl;
+    auto ptr1 = std::make_shared<int>(50);
+    std::cout<<*ptr1<<std::endl;
+
+    int a = 100;
+    char b[] = "Hello World";
+    void * voidPtr = &a;
+    voidPtr = b;
+    std::cout<<*((char*)voidPtr + 2)<<std::endl;
+
+    int p = 100; int q = 500;
+    void* ptr_p = &p; void* ptr_q = &q;
+    exampleVoidFunc<int>(ptr_p, ptr_q);    
 }
