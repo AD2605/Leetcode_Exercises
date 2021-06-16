@@ -1,6 +1,9 @@
+#include <cstdint>
 #include <iostream>
 #include <bits/stdc++.h>
 #include <string>
+
+#define mysize(object) (char *)(&object+1) - (char *)(&object)
 
 
 int getSingle(std::vector<int> input){
@@ -70,6 +73,7 @@ type russianPeasant(type a, type b){
         a = a<<1;
         b = b>>1;
     }
+    return result;
 }
 
 int getIthBit(int n, int i){
@@ -84,6 +88,10 @@ int clearIthBit(int n, int i){
     return n & (~(1<<i));
 }
 
+int toggle_Ith_Bit(int n, int i){
+    return (n ^ (1 << (i-1)));
+}
+
 int checkEndianess(){
     /*Returns 1 if little Endian Else big endian*/
     unsigned int i = 1;
@@ -94,8 +102,58 @@ int checkEndianess(){
         return 0;
 }
 
+char* toggleString(char* input){
+    for (int i=0; *(input + i)!='\0'; i++){
+        *(input + i) ^= 32;
+    }
+    return input;
+}
+
+template<typename type>
+type additionUsingBitwise(type a, type b){
+
+    while(b != 0){
+        type carry = a & b;
+        a = a ^ b;
+        b = carry << 1;
+    }
+
+    return a;
+}
+
+void ReLU(float* input, size_t size){
+    for (size_t i=0; i<size; i++){
+        * (input + i) = ((std::int32_t(*(input + i))>>31) + 1.0f) * *(input + i);
+    }
+}
+
+int min(int x, int y) 
+{ 
+    return y ^ ((x ^ y) & -(x < y)); 
+} 
+
+/*Function to find maximum of x and y*/
+int max(int x, int y) 
+{ 
+    return x ^ ((x ^ y) & -(x < y));  
+} 
+
+
+
 int main(){
+    /*
+    char str[] = "AtHaRvA DuBeY";
+    //char a = 'a';
     std::vector<char> character = {'a', 'b', 'c', 'd'};
     auto subsets = allPossibleSubsets(character);
     std::cout<<checkEndianess()<<std::endl;
+    std::cout<<toggleString(str)<<std::endl;
+    std::cout<<additionUsingBitwise<int>(20, -25)<<std::endl;
+    std::cout<<char(additionUsingBitwise(int('a'), 62))<<std::endl;
+    std::cout<<russianPeasant<int>(5000, 155323)<<std::endl;
+    */
+
+    float a = 10.0f;
+    std::cout<<sizeof(a)<<std::endl;
+    std::cout<<mysize(a)<<std::endl;
 }
